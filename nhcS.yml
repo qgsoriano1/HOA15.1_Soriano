@@ -1,0 +1,36 @@
+---
+- hosts: all
+  become: true
+  become_method: sudo
+  become_user: root
+  pre_tasks:
+
+  - name: Update repository index (CentOS)
+    tags: always
+    dnf:
+      update_cache: yes
+    changed_when: false
+    when: ansible_distribution == "CentOS"
+
+  - name: Install updates (Ubuntu)
+    tags: always
+    apt:
+      update_cache: yes
+    changed_when: false
+    when: ansible_distribution == "Ubuntu"
+
+  tasks:
+    - name: Install neutron
+      apt:
+        name=neutron-linuxbridge-agent
+        state=present
+
+    - name: Install horizon
+      apt:
+        name=python3-django-horizon
+        state=present
+
+    - name: Install cinder
+      apt:
+        name=python3-cinder-api
+        state=present
