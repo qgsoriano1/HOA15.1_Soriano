@@ -32,5 +32,5 @@
 
     - name: Install cinder
       apt:
-        name=python3-cinder-api
+        name=cinder-common
         state=present
